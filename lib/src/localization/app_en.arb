@@ -1,0 +1,6 @@
+{
+  "appTitle": "wik",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}

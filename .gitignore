@@ -25,3 +25,10 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# IntelliJ IDEA
+*.iml
+.idea
+
+# Firebase
+firebase_options.dart
