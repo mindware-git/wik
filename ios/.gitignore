@@ -35,3 +35,4 @@ Runner/GeneratedPluginRegistrant.*
 
 # Firebase
 firebase_app_id_file.json
+GoogleService-Info.plist
