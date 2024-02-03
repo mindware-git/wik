@@ -32,6 +32,9 @@ doc/api/
 
 # Firebase
 firebase_options.dart
+.firebase
+.firebaserc
+firebase.json
 
 # resource
 *.png
