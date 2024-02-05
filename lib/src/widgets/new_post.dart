@@ -93,7 +93,9 @@ class _NewPostState extends State<NewPost> {
       String? introBodyText;
       if (_bodyText != null) {
         introBodyText = _bodyText!.replaceAll('\n', ' ');
-        introBodyText = introBodyText.substring(0, 10);
+        if (introBodyText.length > 10) {
+          introBodyText = introBodyText.substring(0, 10);
+        }
       }
       await FirebaseFirestore.instance.collection('intros').add({
         'postRef': postRef,
