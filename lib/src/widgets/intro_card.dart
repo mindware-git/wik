@@ -11,8 +11,9 @@ class IntroCard extends StatelessWidget {
       child: Column(children: [
         ListTile(
           title: Text(data.title),
-          // subtitle: Text(data.bodyText),
-          //imoji,
+          subtitle: data.bodyText == null ? null : Text(data.bodyText!),
+          leading:
+              data.reviewIconData == null ? null : Icon(data.reviewIconData),
         ),
         //image
       ]),

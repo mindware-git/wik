@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
     return ListenableBuilder(
       listenable: settingsController,
       builder: (BuildContext context, Widget? child) {
-        User? verifiedUser = FirebaseAuth.instance.currentUser;
         return MaterialApp(
           // Providing a restorationScopeId allows the Navigator built by the
           // MaterialApp to restore the navigation stack when a user leaves and
@@ -50,9 +49,16 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
-          initialRoute: verifiedUser == null ? '/sign-in' : '/',
+          initialRoute:
+              FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/',
           routes: {
-            '/': (context) => FetchUserData(uid: verifiedUser!.uid),
+            '/': (context) {
+              // currentUser is null when init app
+              if (FirebaseAuth.instance.currentUser == null) {
+                return const Text('Check sign-in');
+              }
+              return FetchUserData(uid: FirebaseAuth.instance.currentUser!.uid);
+            },
             '/sign-in': (context) {
               return SignInScreen(actions: [
                 AuthStateChangeAction<UserCreated>((context, state) {
@@ -61,6 +67,8 @@ class MyApp extends StatelessWidget {
                 AuthStateChangeAction<SignedIn>((context, state) {
                   if (!state.user!.emailVerified) {
                     Navigator.pushReplacementNamed(context, '/verify-email');
+                  } else {
+                    Navigator.pushReplacementNamed(context, '/');
                   }
                 }),
               ]);
@@ -80,14 +88,26 @@ class MyApp extends StatelessWidget {
                       Navigator.pushReplacementNamed(context, '/');
                     }),
                     AuthCancelledAction((context) {
-                      // TODO(me): check page stack
+                      // TODO(me): fix back button
                       FirebaseUIAuth.signOut();
                     }),
                   ],
                 ),
             '/setting': (context) =>
                 SettingsView(controller: settingsController),
-            // '/profile':
+            '/profile': (context) => ProfileScreen(
+                  appBar: AppBar(title: const Text('Profile')),
+                  avatar: const Text(''),
+                  showDeleteConfirmationDialog: true,
+                  actions: [
+                    SignedOutAction((context) {
+                      Navigator.pushReplacementNamed(context, '/sign-in');
+                    }),
+                    AccountDeletedAction((context, user) {
+                      Navigator.pushReplacementNamed(context, '/sign-in');
+                    })
+                  ],
+                )
           },
         );
       },

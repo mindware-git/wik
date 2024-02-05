@@ -25,7 +25,7 @@ class _RootScreenState extends State<RootScreen> {
           IconButton(
             icon: const Icon(Icons.account_circle),
             onPressed: () {
-              // Navigator.pushNamed(context, '/profile');
+              Navigator.pushNamed(context, '/profile');
             },
           ),
           IconButton(

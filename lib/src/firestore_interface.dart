@@ -93,7 +93,7 @@ class PostROData {
   final String? bodyText;
   final String? imgURL;
   final IconData? reviewIconData;
-  final String? field;
+  final String? workField;
   final GeoPoint? location;
 
   PostROData(
@@ -103,7 +103,7 @@ class PostROData {
       required this.bodyText,
       required this.imgURL,
       required this.reviewIconData,
-      required this.field,
+      required this.workField,
       required this.location});
 }
 
@@ -115,7 +115,7 @@ class PostData {
   final String? bodyText;
   final String? imgURL;
   final int? reviewScore;
-  final String? field;
+  final String? workField;
   final GeoPoint? location;
 
   PostData(
@@ -126,7 +126,7 @@ class PostData {
       required this.bodyText,
       required this.imgURL,
       required this.reviewScore,
-      required this.field,
+      required this.workField,
       required this.location});
 
   PostData.fromFireStore(Map firestore)
@@ -137,7 +137,7 @@ class PostData {
         bodyText = firestore['bodyText'],
         imgURL = firestore['imgURL'],
         reviewScore = firestore['reviewScore'],
-        field = firestore['field'],
+        workField = firestore['workField'],
         location = firestore['location'];
   PostROData toRO() {
     PostROData data = PostROData(
@@ -147,7 +147,7 @@ class PostData {
         bodyText: bodyText,
         imgURL: imgURL,
         reviewIconData: toIcon(reviewScore),
-        field: field,
+        workField: workField,
         location: location);
     return data;
   }
