@@ -24,6 +24,16 @@ class PostCard extends StatelessWidget {
         Column(
           children: [
             Text(data.bodyText!),
+            const SizedBox(height: 8.0),
+          ],
+        ),
+      if (data.reviewIconData != null)
+        Column(
+          children: [
+            Icon(data.reviewIconData),
+            const SizedBox(height: 8.0),
+            Text(data.workField!),
+            const SizedBox(height: 8.0),
           ],
         ),
       // very long long test

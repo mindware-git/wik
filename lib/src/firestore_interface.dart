@@ -17,16 +17,26 @@ String convertDateString(Timestamp? time) {
   return date.toString();
 }
 
+final scoreIconDatas = [
+  Icons.sentiment_very_dissatisfied,
+  Icons.sentiment_dissatisfied,
+  Icons.sentiment_neutral,
+  Icons.sentiment_satisfied,
+  Icons.sentiment_very_satisfied
+];
+
+final workFields = [
+  'Manufacturing',
+  'Construction',
+  'Service',
+  'Agriculture',
+  'Others'
+];
+
 IconData? toIcon(int? score) {
   if (score == null) return null;
   assert(score < 5);
-  switch (score) {
-    case 0:
-      return Icons.sentiment_very_dissatisfied;
-    case 1:
-      return Icons.sentiment_dissatisfied;
-  }
-  return Icons.sentiment_neutral;
+  return scoreIconDatas[score];
 }
 
 /// Intro Read Only Data

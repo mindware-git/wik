@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:wik/src/fetch_user_data.dart';
+import 'package:wik/src/widgets/redirect_sign_in.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -49,17 +50,18 @@ class MyApp extends StatelessWidget {
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
 
-          initialRoute:
-              FirebaseAuth.instance.currentUser == null ? '/sign-in' : '/',
           routes: {
             '/': (context) {
               // currentUser is null when init app
               if (FirebaseAuth.instance.currentUser == null) {
-                return const Text('Check sign-in');
+                return const ReditectSignIn();
               }
               return FetchUserData(uid: FirebaseAuth.instance.currentUser!.uid);
             },
             '/sign-in': (context) {
+              if (FirebaseAuth.instance.currentUser != null) {
+                return const Text('Go to profile');
+              }
               return SignInScreen(actions: [
                 AuthStateChangeAction<UserCreated>((context, state) {
                   Navigator.pushReplacementNamed(context, '/verify-email');
@@ -81,33 +83,43 @@ class MyApp extends StatelessWidget {
              * by firebase(to-many-request) so even finished verified email,
              * it's not passed to next screen, verification successed.
              */
-            '/verify-email': (context) => EmailVerificationScreen(
-                  // actionCodeSettings: ActionCodeSettings(...),
-                  actions: [
-                    EmailVerifiedAction(() {
-                      Navigator.pushReplacementNamed(context, '/');
-                    }),
-                    AuthCancelledAction((context) {
-                      // TODO(me): fix back button
-                      FirebaseUIAuth.signOut();
-                    }),
-                  ],
-                ),
+            '/verify-email': (context) {
+              if (FirebaseAuth.instance.currentUser == null) {
+                return const ReditectSignIn();
+              }
+              return EmailVerificationScreen(
+                // actionCodeSettings: ActionCodeSettings(...),
+                actions: [
+                  EmailVerifiedAction(() {
+                    Navigator.pushReplacementNamed(context, '/');
+                  }),
+                  AuthCancelledAction((context) {
+                    // TODO(me): fix back button
+                    FirebaseUIAuth.signOut();
+                  }),
+                ],
+              );
+            },
             '/setting': (context) =>
                 SettingsView(controller: settingsController),
-            '/profile': (context) => ProfileScreen(
-                  appBar: AppBar(title: const Text('Profile')),
-                  avatar: const Text(''),
-                  showDeleteConfirmationDialog: true,
-                  actions: [
-                    SignedOutAction((context) {
-                      Navigator.pushReplacementNamed(context, '/sign-in');
-                    }),
-                    AccountDeletedAction((context, user) {
-                      Navigator.pushReplacementNamed(context, '/sign-in');
-                    })
-                  ],
-                )
+            '/profile': (context) {
+              if (FirebaseAuth.instance.currentUser == null) {
+                return const ReditectSignIn();
+              }
+              return ProfileScreen(
+                appBar: AppBar(title: const Text('Profile')),
+                avatar: const Text(''),
+                showDeleteConfirmationDialog: true,
+                actions: [
+                  SignedOutAction((context) {
+                    Navigator.pushReplacementNamed(context, '/sign-in');
+                  }),
+                  AccountDeletedAction((context, user) {
+                    Navigator.pushReplacementNamed(context, '/sign-in');
+                  })
+                ],
+              );
+            }
           },
         );
       },

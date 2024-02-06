@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wik/src/screens/new_post_screen.dart';
+import 'package:wik/src/widgets/rank.dart';
 import 'package:wik/src/widgets/intro_list.dart';
 
 class RootScreen extends StatefulWidget {
@@ -68,7 +69,7 @@ class _RootScreenState extends State<RootScreen> {
       body: [
         const IntroList(),
         const SizedBox(),
-        const SizedBox(),
+        const Rank(),
       ][currentPageIndex],
     );
   }

@@ -1,53 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:wik/src/firestore_interface.dart';
 import 'package:wik/src/globals.dart';
 
-List<DropdownMenuItem> reviewItems = [
-  const DropdownMenuItem(
-    value: 1,
-    child: Icon(Icons.sentiment_very_dissatisfied),
-  ),
-  const DropdownMenuItem(
-    value: 2,
-    child: Icon(Icons.sentiment_dissatisfied),
-  ),
-  const DropdownMenuItem(
-    value: 3,
-    child: Icon(Icons.sentiment_neutral),
-  ),
-  const DropdownMenuItem(
-    value: 4,
-    child: Icon(Icons.sentiment_satisfied),
-  ),
-  const DropdownMenuItem(
-    value: 5,
-    child: Icon(Icons.sentiment_very_satisfied),
-  ),
-];
+final reviewItems = List.generate(
+    scoreIconDatas.length,
+    (index) => DropdownMenuItem(
+          value: index,
+          child: Icon(scoreIconDatas[index]),
+        ));
 
-List<DropdownMenuItem> workFieldItems = [
-  const DropdownMenuItem(
-    value: 'Manufacturing',
-    child: Text('Manufacturing'),
-  ),
-  const DropdownMenuItem(
-    value: 'Construction',
-    child: Text('Construction'),
-  ),
-  const DropdownMenuItem(
-    value: 'Service',
-    child: Text('Service'),
-  ),
-  const DropdownMenuItem(
-    value: 'Agriculture',
-    child: Text('Agriculture'),
-  ),
-  const DropdownMenuItem(
-    value: 'Others',
-    child: Text('Others'),
-  ),
-];
+final workFieldItems = workFields
+    .map((e) => DropdownMenuItem(
+          value: e,
+          child: Text(e),
+        ))
+    .toList();
 
 class NewPost extends StatefulWidget {
   const NewPost({super.key});
